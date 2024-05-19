@@ -1,9 +1,13 @@
 # Matrix-math
 
-[![Build Icon]][Build Status]&emsp;[![License Icon]][LICENSE]
+[![Build Icon]][Build Status]&emsp;[![Docs Icon]][Docs]&emsp;[![Version Icon]][Crate]&emsp;[![License Icon]][LICENSE]
 
 [Build Icon]: https://img.shields.io/github/actions/workflow/status/1kill2steal/matrix-rs/ci.yml?branch=main
 [Build Status]: https://github.com/1kill2steal/matrix-rs/actions?query=branch%3Amaster
+[Docs Icon]: https://docs.rs/matrix-math/badge.svg
+[Docs]: https://docs.rs/matrix-math/latest/leetcode_trees_rs/
+[Version Icon]: https://img.shields.io/crates/v/matrix-math.svg
+[Crate]: https://crates.io/crates/matrix-math
 [License Icon]: https://img.shields.io/badge/license-MIT-blue.svg
 [LICENSE]: LICENSE
 
