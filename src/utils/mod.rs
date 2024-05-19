@@ -74,18 +74,21 @@ where
     }
 }
 
-pub fn matrix(n: u32, cols: Option<usize>, rows: Option<usize>) -> Vec<Vec<i32>> {
+pub fn matrix<T>(n: u32, cols: Option<usize>, rows: Option<usize>) -> Matrix<T>
+where
+    T: std::str::FromStr + std::fmt::Debug + num_traits::Signed,
+{
     let col_count =
         nonzero_positive_input::<usize>(&format!("Enter column count for matrix {}: ", n), cols);
     let row_count =
         nonzero_positive_input::<usize>(&format!("Enter row count for matrix {}: ", n), rows);
 
-    let mut res: Vec<Vec<i32>> = vec![];
+    let mut res: Matrix<T> = vec![];
 
     for col in 1..=col_count {
         let mut row_content = Vec::with_capacity(col_count);
         for row in 1..=row_count {
-            row_content.push(numeric_input::<i32>(
+            row_content.push(numeric_input::<T>(
                 &format!(
                     "Enter item at row {} and column {} for matrix {n}: ",
                     row, col
@@ -104,14 +107,17 @@ pub fn matrix(n: u32, cols: Option<usize>, rows: Option<usize>) -> Vec<Vec<i32>>
 /// This function assumes `m1.len()` == `m2.len()` as well as `m1[0].len()` == `m2[0].len()`.
 /// If you wish to instead handle the errors in the case you're unsure if the lengths are the same
 /// then please use `fn matrix_operation()` and handle the `Result<T, E>` appropriately.
-pub fn matrix_operation_unchecked(
+pub fn matrix_operation_unchecked<T>(
     op: MatrixOperation,
-    m1: MatrixRef<'_, i32>,
-    m2: MatrixRef<'_, i32>,
-) -> Matrix<i32> {
+    m1: MatrixRef<'_, T>,
+    m2: MatrixRef<'_, T>,
+) -> Matrix<T>
+where
+    T: std::str::FromStr + std::fmt::Debug + Clone + num_traits::Signed,
+{
     use MatrixOperation as MO;
 
-    let operation: Box<dyn Fn(i32, i32) -> i32> = match op {
+    let operation: Box<dyn Fn(T, T) -> T> = match op {
         MO::Addition => Box::new(|a, b| a + b),
         MO::Subtraction => Box::new(|a, b| a - b),
         MO::Multiplication => Box::new(|a, b| a * b),
@@ -122,18 +128,21 @@ pub fn matrix_operation_unchecked(
         .map(|(i, col)| {
             col.iter()
                 .enumerate()
-                .map(|(j, _)| operation(m1[i][j], m2[i][j]))
-                .collect::<Vec<i32>>()
+                .map(|(j, _)| operation(m1[i][j].clone(), m2[i][j].clone()))
+                .collect::<Vec<T>>()
         })
-        .collect::<Matrix<i32>>()
+        .collect::<Matrix<T>>()
 }
 
 #[allow(unused)]
-pub fn matrix_operation<'m>(
+pub fn matrix_operation<'m, T>(
     op: MatrixOperation,
-    m1: MatrixRef<'m, i32>,
-    m2: MatrixRef<'m, i32>,
-) -> Result<Matrix<i32>, MatrixError<'m, i32>> {
+    m1: MatrixRef<'m, T>,
+    m2: MatrixRef<'m, T>,
+) -> Result<Matrix<T>, MatrixError<'m, T>>
+where
+    T: std::str::FromStr + std::fmt::Debug + Clone + num_traits::Signed,
+{
     use MatrixError as ME;
 
     if m1.is_empty() {
