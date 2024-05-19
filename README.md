@@ -1,4 +1,4 @@
-# Matrix-rs
+# Matrix-math
 
 [![Build Icon]][Build Status]&emsp;[![License Icon]][LICENSE]
 
@@ -7,7 +7,7 @@
 [License Icon]: https://img.shields.io/badge/license-MIT-blue.svg
 [LICENSE]: LICENSE
 
-A simple rust library/CLI app that allows for basic work with mathematical Matrices.
+A simple Rust library/CLI app that allows for basic work with mathematical Matrices.
 
 ## Getting started
 
