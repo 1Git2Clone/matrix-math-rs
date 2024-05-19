@@ -107,20 +107,25 @@ where
 /// This function assumes `m1.len()` == `m2.len()` as well as `m1[0].len()` == `m2[0].len()`.
 /// If you wish to instead handle the errors in the case you're unsure if the lengths are the same
 /// then please use `fn matrix_operation()` and handle the `Result<T, E>` appropriately.
-pub fn matrix_operation_unchecked<T>(
+pub fn matrix_operation_unchecked<'m, T>(
     op: MatrixOperation,
-    m1: MatrixRef<'_, T>,
-    m2: MatrixRef<'_, T>,
+    m1: MatrixRef<'m, T>,
+    m2: MatrixRef<'m, T>,
 ) -> Matrix<T>
 where
-    T: std::str::FromStr + std::fmt::Debug + Clone + num_traits::Num,
+    T: std::str::FromStr + std::fmt::Debug + num_traits::Num + num_traits::RefNum<T>,
+    &'m T: std::ops::Add<&'m T, Output = T>,
+    &'m T: std::ops::Sub<&'m T, Output = T>,
+    &'m T: std::ops::Mul<&'m T, Output = T>,
+    &'m T: std::ops::Div<&'m T, Output = T>,
 {
     use MatrixOperation as MO;
 
-    let operation: Box<dyn Fn(T, T) -> T> = match op {
+    let operation: Box<dyn Fn(&'m T, &'m T) -> T> = match op {
         MO::Addition => Box::new(|a, b| a + b),
         MO::Subtraction => Box::new(|a, b| a - b),
         MO::Multiplication => Box::new(|a, b| a * b),
+        MO::Division => Box::new(|a, b| a / b),
     };
 
     m1.iter()
@@ -128,7 +133,7 @@ where
         .map(|(i, col)| {
             col.iter()
                 .enumerate()
-                .map(|(j, _)| operation(m1[i][j].clone(), m2[i][j].clone()))
+                .map(|(j, _)| operation(&m1[i][j], &m2[i][j]))
                 .collect::<Vec<T>>()
         })
         .collect::<Matrix<T>>()
@@ -141,7 +146,11 @@ pub fn matrix_operation<'m, T>(
     m2: MatrixRef<'m, T>,
 ) -> Result<Matrix<T>, MatrixError<'m, T>>
 where
-    T: std::str::FromStr + std::fmt::Debug + Clone + num_traits::Num,
+    T: std::str::FromStr + std::fmt::Debug + Clone + num_traits::Num + num_traits::RefNum<T>,
+    &'m T: std::ops::Add<&'m T, Output = T>,
+    &'m T: std::ops::Sub<&'m T, Output = T>,
+    &'m T: std::ops::Mul<&'m T, Output = T>,
+    &'m T: std::ops::Div<&'m T, Output = T>,
 {
     use MatrixError as ME;
 
