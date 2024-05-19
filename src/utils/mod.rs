@@ -133,7 +133,7 @@ pub fn matrix_operation<'m>(
     op: MatrixOperation,
     m1: MatrixRef<'m, i32>,
     m2: MatrixRef<'m, i32>,
-) -> Result<Vec<Vec<i32>>, MatrixError<'m, i32>> {
+) -> Result<Matrix<i32>, MatrixError<'m, i32>> {
     use MatrixError as ME;
 
     if m1.is_empty() {
