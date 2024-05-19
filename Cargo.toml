@@ -2,6 +2,13 @@
 name = "matrix"
 version = "0.1.0"
 edition = "2021"
+description = "A Rust library for Mathematical matrices."
+keywords = ["matrix", "math"]
+homepage = "https://github.com/1kill2steal/matrix-rs"
+repository = "https://github.com/1kill2steal/matrix-rs"
+license = "MIT"
+readme = "README.md"
+include = ["src/**/*", "LICENSE.md", "README.md"]
 
 [dependencies]
 clap = { version = "^4.5.4", features = ["derive"] }
