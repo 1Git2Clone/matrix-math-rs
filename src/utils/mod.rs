@@ -43,7 +43,7 @@ where
 
 pub fn numeric_input<T>(msg: &str, predefined: Option<T>) -> T
 where
-    T: std::str::FromStr + std::fmt::Debug + num_traits::Signed,
+    T: std::str::FromStr + std::fmt::Debug + num_traits::Num,
 {
     use std::io::Write;
 
@@ -76,7 +76,7 @@ where
 
 pub fn matrix<T>(n: u32, cols: Option<usize>, rows: Option<usize>) -> Matrix<T>
 where
-    T: std::str::FromStr + std::fmt::Debug + num_traits::Signed,
+    T: std::str::FromStr + std::fmt::Debug + num_traits::Num,
 {
     let col_count =
         nonzero_positive_input::<usize>(&format!("Enter column count for matrix {}: ", n), cols);
@@ -113,7 +113,7 @@ pub fn matrix_operation_unchecked<T>(
     m2: MatrixRef<'_, T>,
 ) -> Matrix<T>
 where
-    T: std::str::FromStr + std::fmt::Debug + Clone + num_traits::Signed,
+    T: std::str::FromStr + std::fmt::Debug + Clone + num_traits::Num,
 {
     use MatrixOperation as MO;
 
@@ -141,7 +141,7 @@ pub fn matrix_operation<'m, T>(
     m2: MatrixRef<'m, T>,
 ) -> Result<Matrix<T>, MatrixError<'m, T>>
 where
-    T: std::str::FromStr + std::fmt::Debug + Clone + num_traits::Signed,
+    T: std::str::FromStr + std::fmt::Debug + Clone + num_traits::Num,
 {
     use MatrixError as ME;
 
