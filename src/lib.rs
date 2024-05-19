@@ -23,6 +23,9 @@
 //!     let product = matrix_operation_unchecked(MatrixOperation::Multiplication, &matrix1, &matrix2);
 //!     println!("Product:\n{:#?}", product);
 //!
+//!     let division = matrix_operation_unchecked(MatrixOperation::Division, &matrix1, &matrix2);
+//!     println!("Results from division:\n{:#?}", division);
+//!
 //!     Ok(())
 //! }
 //!
