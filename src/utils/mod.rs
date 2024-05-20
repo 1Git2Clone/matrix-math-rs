@@ -4,8 +4,9 @@ use crate::structs::Matrix;
 
 pub fn nonzero_positive_input<T>(msg: &str, desired_count: Option<T>) -> T
 where
-    T: std::str::FromStr + std::cmp::PartialOrd + std::fmt::Debug,
     T: num_traits::Unsigned + num_traits::NumCast,
+    T: std::cmp::PartialOrd,
+    T: std::str::FromStr + std::fmt::Debug,
 {
     use std::io::Write;
 
@@ -43,7 +44,8 @@ where
 
 pub fn numeric_input<T>(msg: &str, predefined: Option<T>) -> T
 where
-    T: std::str::FromStr + std::fmt::Debug + num_traits::Num,
+    T: num_traits::Num,
+    T: std::str::FromStr + std::fmt::Debug,
 {
     use std::io::Write;
 
@@ -77,7 +79,7 @@ where
 pub fn matrix<T>(n: u32, cols: Option<usize>, rows: Option<usize>) -> Matrix<T>
 where
     T: num_traits::Num,
-    T: std::str::FromStr + std::fmt::Debug + std::default::Default,
+    T: std::str::FromStr + std::fmt::Debug,
 {
     let col_count =
         nonzero_positive_input::<usize>(&format!("Enter column count for matrix {}: ", n), cols);
@@ -114,7 +116,8 @@ pub fn matrix_operation_unchecked<'m, T>(
     m2: &'m Matrix<T>,
 ) -> Matrix<T>
 where
-    T: std::str::FromStr + std::fmt::Debug + num_traits::Num + num_traits::RefNum<T>,
+    T: num_traits::Num,
+    T: std::str::FromStr + std::fmt::Debug,
     &'m T: std::ops::Add<&'m T, Output = T>,
     &'m T: std::ops::Sub<&'m T, Output = T>,
     &'m T: std::ops::Mul<&'m T, Output = T>,
@@ -151,7 +154,8 @@ pub fn matrix_operation<'m, T>(
     m2: &'m Matrix<T>,
 ) -> Result<Matrix<T>, MatrixError<'m, T>>
 where
-    T: std::str::FromStr + std::fmt::Debug + Clone + num_traits::Num + num_traits::RefNum<T>,
+    T: num_traits::Num,
+    T: std::str::FromStr + std::fmt::Debug,
     &'m T: std::ops::Add<&'m T, Output = T>,
     &'m T: std::ops::Sub<&'m T, Output = T>,
     &'m T: std::ops::Mul<&'m T, Output = T>,

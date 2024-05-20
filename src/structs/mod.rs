@@ -1,12 +1,24 @@
 use clap::Parser;
 
-#[derive(Debug, Clone, Default)]
+#[derive(Debug, Clone)]
 pub struct Matrix<T>
 where
     T: num_traits::Num,
     T: std::fmt::Debug,
 {
     pub content: Vec<Vec<T>>,
+}
+
+impl<T> std::default::Default for Matrix<T>
+where
+    T: num_traits::Num,
+    T: std::fmt::Debug,
+{
+    fn default() -> Self {
+        Self {
+            content: Vec::default(),
+        }
+    }
 }
 
 impl<T> std::fmt::Display for Matrix<T>
