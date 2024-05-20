@@ -46,5 +46,4 @@ pub mod enums;
 pub mod error;
 pub mod prelude;
 pub mod structs;
-pub mod types;
 pub mod utils;

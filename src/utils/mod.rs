@@ -1,6 +1,6 @@
 use crate::enums::MatrixOperation;
 use crate::error::MatrixError;
-use crate::types::{Matrix, MatrixRef};
+use crate::structs::Matrix;
 
 pub fn nonzero_positive_input<T>(msg: &str, desired_count: Option<T>) -> T
 where
@@ -76,14 +76,15 @@ where
 
 pub fn matrix<T>(n: u32, cols: Option<usize>, rows: Option<usize>) -> Matrix<T>
 where
-    T: std::str::FromStr + std::fmt::Debug + num_traits::Num,
+    T: num_traits::Num,
+    T: std::str::FromStr + std::fmt::Debug + std::default::Default,
 {
     let col_count =
         nonzero_positive_input::<usize>(&format!("Enter column count for matrix {}: ", n), cols);
     let row_count =
         nonzero_positive_input::<usize>(&format!("Enter row count for matrix {}: ", n), rows);
 
-    let mut res: Matrix<T> = vec![];
+    let mut res: Matrix<T> = Matrix::default();
 
     for col in 1..=col_count {
         let mut row_content = Vec::with_capacity(col_count);
@@ -96,7 +97,7 @@ where
                 None,
             ));
         }
-        res.push(row_content);
+        res.content.push(row_content);
     }
 
     res
@@ -109,8 +110,8 @@ where
 /// then please use `fn matrix_operation()` and handle the `Result<T, E>` appropriately.
 pub fn matrix_operation_unchecked<'m, T>(
     op: MatrixOperation,
-    m1: MatrixRef<'m, T>,
-    m2: MatrixRef<'m, T>,
+    m1: &'m Matrix<T>,
+    m2: &'m Matrix<T>,
 ) -> Matrix<T>
 where
     T: std::str::FromStr + std::fmt::Debug + num_traits::Num + num_traits::RefNum<T>,
@@ -128,22 +129,26 @@ where
         MO::Division => Box::new(|a, b| a / b),
     };
 
-    m1.iter()
-        .enumerate()
-        .map(|(i, col)| {
-            col.iter()
-                .enumerate()
-                .map(|(j, _)| operation(&m1[i][j], &m2[i][j]))
-                .collect::<Vec<T>>()
-        })
-        .collect::<Matrix<T>>()
+    Matrix {
+        content: m1
+            .content
+            .iter()
+            .enumerate()
+            .map(|(i, col)| {
+                col.iter()
+                    .enumerate()
+                    .map(|(j, _)| operation(&m1.content[i][j], &m2.content[i][j]))
+                    .collect::<Vec<T>>()
+            })
+            .collect::<Vec<Vec<T>>>(),
+    }
 }
 
 #[allow(unused)]
 pub fn matrix_operation<'m, T>(
     op: MatrixOperation,
-    m1: MatrixRef<'m, T>,
-    m2: MatrixRef<'m, T>,
+    m1: &'m Matrix<T>,
+    m2: &'m Matrix<T>,
 ) -> Result<Matrix<T>, MatrixError<'m, T>>
 where
     T: std::str::FromStr + std::fmt::Debug + Clone + num_traits::Num + num_traits::RefNum<T>,
@@ -154,14 +159,14 @@ where
 {
     use MatrixError as ME;
 
-    if m1.is_empty() {
+    if m1.content.is_empty() {
         return Err(ME::Empty(m1));
     }
-    if m2.is_empty() {
+    if m2.content.is_empty() {
         return Err(ME::Empty(m2));
     }
 
-    if m1.len() != m2.len() || m1[0].len() != m2[0].len() {
+    if m1.content.len() != m2.content.len() || m1.content[0].len() != m2.content[0].len() {
         return Err(ME::NotEqual(m1, m2));
     }
 

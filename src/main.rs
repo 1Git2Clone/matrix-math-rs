@@ -2,7 +2,6 @@ mod enums;
 mod error;
 mod prelude;
 mod structs;
-mod types;
 mod utils;
 
 use crate::prelude::*;
@@ -12,7 +11,11 @@ fn interactive_matrices_example() -> Result<(), Error> {
 
     // By calling matrix2 with the length parameters of matrix1 like so. Doing the operations
     // unchecked is **SAFE**.
-    let matrix2 = matrix::<f32>(2, Some(matrix1.len()), Some(matrix1[0].len()));
+    let matrix2 = matrix::<f32>(
+        2,
+        Some(matrix1.content.len()),
+        Some(matrix1.content[0].len()),
+    );
 
     let sum = matrix_operation_unchecked(MatrixOperation::Addition, &matrix1, &matrix2);
     println!("Sum:\n{:#?}", sum);
