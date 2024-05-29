@@ -1,0 +1,26 @@
+stages:
+  - build
+  - test
+
+variables:
+  CARGO_TERM_COLOR: "always"
+
+build:
+  stage: build
+  image: rust:latest
+  before_script:
+    - rustup component add clippy
+    - rustup component add rustfmt
+  script:
+    - cargo build --verbose
+
+test:
+  stage: test
+  image: rust:latest
+  script:
+    - cargo test --verbose
+
+workflow:
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == "main"'
+    - if: '$CI_PIPELINE_SOURCE == "merge_request" && $CI_COMMIT_BRANCH == "main"'
