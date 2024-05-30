@@ -1,7 +1,9 @@
 # Matrix-math
 
-[![Build Icon]][Build Status]&emsp;[![Docs Icon]][Docs]&emsp;[![Version Icon]][Crate]&emsp;[![License Icon]][LICENSE]
+[![GH_Build Icon]][GH_Build Status]&emsp;[![Build Icon]][Build Status]&emsp;[![Docs Icon]][Docs]&emsp;[![Version Icon]][Crate]&emsp;[![License Icon]][LICENSE]
 
+[GH_Build Icon]: https://img.shields.io/github/actions/workflow/status/1git2clone/matrix-math-rs/rust.yml?branch=main
+[GH_Build Status]: https://github.com/1git2clone/matrix-math-rs/actions?query=branch%3Amaster
 [Build Icon]: https://gitlab.com/1k2s/matrix-math/badges/main/pipeline.svg
 [Build Status]: https://gitlab.com/1k2s/matrix-math/-/pipelines
 [Docs Icon]: https://docs.rs/matrix-math/badge.svg
